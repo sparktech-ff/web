@@ -1,11 +1,11 @@
-import React from "react";
-import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import React, {useState} from "react";
+import {Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@mui/material";
 import {Form} from "@sparkui/react-form";
 import {PrimaryButton, SecondaryButton} from "@sparkui/react-theme";
 import styled from "styled-components";
-import {useAuth} from "@/config/AuthContext";
 import {FeatureFlagRequestDto, FeatureFlagResponseDto} from "@/rest/data-contracts";
 import {featureFlagService} from "@/services/http";
+import AddIcon from "@mui/icons-material/Add";
 
 export interface FeatureFlagModalProps {
   open: boolean;
@@ -18,10 +18,11 @@ export const FeatureFlagModal = (
   {
     open,
     setOpen,
-    featureFlag,
+    featureFlag = {},
     onAfterSave,
   }: FeatureFlagModalProps
 ) => {
+  const [users, setUsers] = useState(featureFlag?.users ?? []);
 
   const onSave = async (data: FeatureFlagRequestDto) => {
     if (featureFlag?.id) {
@@ -39,7 +40,7 @@ export const FeatureFlagModal = (
       <StyledForm value={featureFlag as FeatureFlagRequestDto}>
         <DialogTitle>
           {featureFlag?.id ? 'Update' : 'Create a new'}
-          Feature Flag
+          &nbsp;Feature Flag
         </DialogTitle>
         <DialogContent className="w-100">
           <div className="d-flex flex-column align-items-start gap-3 w-100">
@@ -53,19 +54,37 @@ export const FeatureFlagModal = (
               }}
             />
             <Form.Text
+              param="mode"
+              params={{
+                label: 'Mode',
+                className: 'w-100'
+              }}
+            />
+            <Form.Text
               param="description"
               params={{
                 label: 'Description',
                 className: 'w-100'
               }}
             />
-            <Form.Text
-              param="mode"
-              params={{
-                label: 'mode',
-                className: 'w-100'
-              }}
-            />
+            <span>Affected users:</span>
+            {
+              users?.map((user, index) => (
+                <Form.Text
+                  key={`${user}${index}`}
+                  param={`users.${index}`}
+                  params={{
+                    label: 'User id',
+                    className: 'w-100'
+                  }}
+                />
+              ))
+            }
+            <AddButton>
+              <IconButton onClick={() => setUsers([...users, ''])}>
+                <AddIcon/>
+              </IconButton>
+            </AddButton>
           </div>
         </DialogContent>
         <DialogActions className="p-3 gap-3">
@@ -81,4 +100,9 @@ export const FeatureFlagModal = (
 
 const StyledForm = styled(Form<FeatureFlagRequestDto>)`
     min-width: min(calc(100vw - 64px), 400px);
+`;
+
+const AddButton = styled.div`
+  display: flex;
+  justify-content: end;
 `;

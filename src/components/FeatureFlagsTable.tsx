@@ -15,9 +15,11 @@ import {FeatureFlagRequestDto, FeatureFlagResponseDto} from "@/rest/data-contrac
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import CopyIcon from '@mui/icons-material/CopyAll';
 import {useAuth} from "@/config/AuthContext";
 import {FeatureFlagModal} from "@/components/FeatureFlagModal";
 import {ConfirmationModal} from "@/components/ConfirmationModal";
+import styled from "styled-components";
 
 const emptyFlag: () => FeatureFlagRequestDto = () => ({
   name: '',
@@ -46,10 +48,11 @@ export const FeatureFlagsTable = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Users</TableCell>
+            <TableCell width={10}>Id</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="left">Mode</TableCell>
+            <TableCell align="left">Description</TableCell>
+            <TableCell align="left">Affected users</TableCell>
             {isAuthenticated && (
               <TableCell align="right">
                 <Button onClick={() => setSaveFeatureFlag(emptyFlag())}>
@@ -66,12 +69,29 @@ export const FeatureFlagsTable = () => {
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.id}
+              <TableCell width={10} component="th" scope="row">
+                <LimitedWrapper>
+                  <IconButton onClick={() => navigator.clipboard.writeText(row.id!)}>
+                    <CopyIcon />
+                  </IconButton>
+                  <Limited>{row.id}</Limited>
+                </LimitedWrapper>
               </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.description}</TableCell>
-              <TableCell align="right">{row.users}</TableCell>
+              <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">{row.mode}</TableCell>
+              <TableCell align="left">{row.description}</TableCell>
+              <TableCell align="left">
+                {
+                  row.users && (
+                    <LimitedWrapper>
+                      <IconButton onClick={() => navigator.clipboard.writeText(row.users!.join(','))}>
+                        <CopyIcon />
+                      </IconButton>
+                      <Limited>{row.users}</Limited>
+                    </LimitedWrapper>
+                  )
+                }
+              </TableCell>
               {
                 isAuthenticated && (
                   <TableCell align="right">
@@ -115,3 +135,15 @@ export const FeatureFlagsTable = () => {
     </TableContainer>
   )
 }
+
+const LimitedWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const Limited = styled.div`
+    display: block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
