@@ -52,7 +52,7 @@ export const FeatureFlagsTable = () => {
             <TableCell align="left">Name</TableCell>
             <TableCell align="left">Mode</TableCell>
             <TableCell align="left">Description</TableCell>
-            <TableCell align="left">Affected users</TableCell>
+            <TableCell align="left">Specific users</TableCell>
             {isAuthenticated && (
               <TableCell align="right">
                 <Button onClick={() => setSaveFeatureFlag(emptyFlag())}>
@@ -84,7 +84,7 @@ export const FeatureFlagsTable = () => {
                 {
                   row.users && (
                     <LimitedWrapper>
-                      <Limited>{row.users}</Limited>
+                      <Limited>{row.users.length} - {row.users!.join(',')}</Limited>
                       <IconButton onClick={() => navigator.clipboard.writeText(row.users!.join(','))}>
                         <CopyIcon />
                       </IconButton>
@@ -146,5 +146,6 @@ const Limited = styled.div`
     display: block;
     max-width: 120px;
     overflow: hidden;
+    text-wrap: nowrap;
     text-overflow: ellipsis;
 `;

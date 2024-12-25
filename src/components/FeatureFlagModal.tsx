@@ -77,7 +77,7 @@ export const FeatureFlagModal = (
                   users?.map((user, index) => (
                     <Form.Text
                       key={`${user}${index}`}
-                      param={`users.${index}`}
+                      param={`users[${index}]`}
                       params={{
                         label: 'User id',
                         className: 'w-100'
