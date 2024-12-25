@@ -71,10 +71,10 @@ export const FeatureFlagsTable = () => {
             >
               <TableCell width={10} component="th" scope="row">
                 <LimitedWrapper>
+                  <Limited>{row.id}</Limited>
                   <IconButton onClick={() => navigator.clipboard.writeText(row.id!)}>
                     <CopyIcon />
                   </IconButton>
-                  <Limited>{row.id}</Limited>
                 </LimitedWrapper>
               </TableCell>
               <TableCell align="left">{row.name}</TableCell>
@@ -84,10 +84,10 @@ export const FeatureFlagsTable = () => {
                 {
                   row.users && (
                     <LimitedWrapper>
+                      <Limited>{row.users}</Limited>
                       <IconButton onClick={() => navigator.clipboard.writeText(row.users!.join(','))}>
                         <CopyIcon />
                       </IconButton>
-                      <Limited>{row.users}</Limited>
                     </LimitedWrapper>
                   )
                 }
@@ -109,6 +109,7 @@ export const FeatureFlagsTable = () => {
         </TableBody>
       </Table>
       <FeatureFlagModal
+        key={saveFeatureFlag?.id}
         open={!!saveFeatureFlag}
         setOpen={() => setSaveFeatureFlag(undefined)}
         featureFlag={saveFeatureFlag}

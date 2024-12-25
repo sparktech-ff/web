@@ -22,7 +22,7 @@ export const FeatureFlagModal = (
     onAfterSave,
   }: FeatureFlagModalProps
 ) => {
-  const [users, setUsers] = useState(featureFlag?.users ?? []);
+  const [users, setUsers] = useState(featureFlag?.users ?? ['']);
 
   const onSave = async (data: FeatureFlagRequestDto) => {
     if (featureFlag?.id) {
@@ -43,48 +43,55 @@ export const FeatureFlagModal = (
           &nbsp;Feature Flag
         </DialogTitle>
         <DialogContent className="w-100">
-          <div className="d-flex flex-column align-items-start gap-3 w-100">
-            <Form.Text
-              param="name"
-              required={true}
-              params={{
-                getHelperText: (errors: []) => errors.length > 0 ? "Required value" : undefined,
-                label: 'Name',
-                className: 'w-100'
-              }}
-            />
-            <Form.Text
-              param="mode"
-              params={{
-                label: 'Mode',
-                className: 'w-100'
-              }}
-            />
-            <Form.Text
-              param="description"
-              params={{
-                label: 'Description',
-                className: 'w-100'
-              }}
-            />
-            <span>Affected users:</span>
-            {
-              users?.map((user, index) => (
+          <div className="row">
+            <div className="col-12 col-lg-6">
+              <div className="d-flex flex-column align-items-start gap-3 w-100">
                 <Form.Text
-                  key={`${user}${index}`}
-                  param={`users.${index}`}
+                  param="name"
+                  required={true}
                   params={{
-                    label: 'User id',
+                    getHelperText: (errors: []) => errors.length > 0 ? "Required value" : undefined,
+                    label: 'Name',
                     className: 'w-100'
                   }}
                 />
-              ))
-            }
-            <AddButton>
-              <IconButton onClick={() => setUsers([...users, ''])}>
-                <AddIcon/>
-              </IconButton>
-            </AddButton>
+                <Form.Text
+                  param="mode"
+                  params={{
+                    label: 'Mode',
+                    className: 'w-100'
+                  }}
+                />
+                <Form.Text
+                  param="description"
+                  params={{
+                    label: 'Description',
+                    className: 'w-100'
+                  }}
+                />
+              </div>
+            </div>
+            <div className="col-12 col-lg-6">
+              <Limited className="d-flex flex-column align-items-start gap-3 w-100">
+                {
+                  users?.map((user, index) => (
+                    <Form.Text
+                      key={`${user}${index}`}
+                      param={`users.${index}`}
+                      params={{
+                        label: 'User id',
+                        className: 'w-100'
+                      }}
+                    />
+                  ))
+                }
+              </Limited>
+              <AddButton>
+                <IconButton onClick={() => setUsers([...users, ''])}>
+                  <AddIcon/>
+                </IconButton>
+              </AddButton>
+            </div>
           </div>
         </DialogContent>
         <DialogActions className="p-3 gap-3">
@@ -103,6 +110,11 @@ const StyledForm = styled(Form<FeatureFlagRequestDto>)`
 `;
 
 const AddButton = styled.div`
-  display: flex;
-  justify-content: end;
+    display: flex;
+    justify-content: end;
+`;
+
+const Limited = styled.div`
+    max-height: 200px;
+    overflow: auto;
 `;
