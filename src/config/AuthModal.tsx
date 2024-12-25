@@ -29,7 +29,10 @@ export const AuthModal = (
       url,
       {
         method: 'POST',
-        body: JSON.stringify(request),
+        body: JSON.stringify({
+          ...request,
+          returnSecureToken: true
+        }),
       }
     );
     const data = await response.json();

@@ -1,14 +1,24 @@
 import {IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import {publicFeatureFlagService} from "@/services/http";
-import {FeatureFlagResponseDto} from "@/rest/data-contracts";
+import {featureFlagService, publicFeatureFlagService} from "@/services/http";
+import {FeatureFlagRequestDto, FeatureFlagResponseDto} from "@/rest/data-contracts";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import {useAuth} from "@/config/AuthContext";
 import {FeatureFlagModal} from "@/components/FeatureFlagModal";
+import {ConfirmationModal} from "@/components/ConfirmationModal";
+
+const emptyFlag: () => FeatureFlagRequestDto = () => ({
+  name: '',
+  description: '',
+  mode: '',
+  users: []
+})
 
 export const FeatureFlagsTable = () => {
-  const [featureFlag, setFeatureFlag] = useState<FeatureFlagResponseDto>();
+  const [removeFeatureFlag, setRemoveFeatureFlag] = useState<FeatureFlagResponseDto>();
+  const [saveFeatureFlag, setSaveFeatureFlag] = useState<FeatureFlagResponseDto>();
   const [rows, setRows] = useState<FeatureFlagResponseDto[]>([]);
   const {isAuthenticated} = useAuth();
 
@@ -30,8 +40,15 @@ export const FeatureFlagsTable = () => {
             <TableCell align="right">Name</TableCell>
             <TableCell align="right">Description</TableCell>
             <TableCell align="right">Users</TableCell>
-            {isAuthenticated && <TableCell align="right">Actions</TableCell>}
-
+            {isAuthenticated && (
+              <TableCell align="right">
+                Actions
+                &nbsp;
+                <IconButton onClick={() => setSaveFeatureFlag(emptyFlag())}>
+                  <AddIcon color="primary" />
+                </IconButton>
+              </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,11 +66,11 @@ export const FeatureFlagsTable = () => {
               {
                 isAuthenticated && (
                   <TableCell align="right">
-                    <IconButton aria-label="delete" onClick={() => setFeatureFlag(row)}>
+                    <IconButton onClick={() => setSaveFeatureFlag(row)}>
                       <EditIcon color="primary" />
                     </IconButton>
-                    <IconButton aria-label="delete">
-                      <DeleteIcon color="error" />
+                    <IconButton>
+                      <DeleteIcon color="error" onClick={() => setRemoveFeatureFlag(row)} />
                     </IconButton>
                   </TableCell>
                 )
@@ -63,10 +80,28 @@ export const FeatureFlagsTable = () => {
         </TableBody>
       </Table>
       <FeatureFlagModal
-        open={!!featureFlag}
-        setOpen={() => setFeatureFlag(undefined)}
-        featureFlag={featureFlag}
+        open={!!saveFeatureFlag}
+        setOpen={() => setSaveFeatureFlag(undefined)}
+        featureFlag={saveFeatureFlag}
         onAfterSave={reload}
+      />
+      <ConfirmationModal
+        open={!!removeFeatureFlag}
+        title="Remove feature flag"
+        confirmation={
+          <span>
+            Do you really want to remove feature flag <b>{removeFeatureFlag?.name}</b>?
+          </span>
+        }
+        onClose={async (confirmed) => {
+          if (confirmed) {
+            await featureFlagService.remove(removeFeatureFlag?.id!)
+            setRemoveFeatureFlag(undefined);
+            await reload()
+          } else {
+            setRemoveFeatureFlag(undefined);
+          }
+        }}
       />
     </TableContainer>
   )

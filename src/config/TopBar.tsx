@@ -1,5 +1,6 @@
 import {AppBar, Box, Button, IconButton, Toolbar} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import UserIcon from "@mui/icons-material/Person";
 import React, {useState} from "react";
 import {AuthModal} from "@/config/AuthModal";
 import {useRouter} from "next/navigation";
@@ -35,10 +36,10 @@ export const TopBar = (
           <Button color="inherit" onClick={() => router.push('/')}>Feature Flags</Button>
         </Box>
         {
-          isAuthenticated && <Button color="inherit" onClick={() => setToken(undefined)}>Logout</Button>
+          isAuthenticated && <Button color="inherit" onClick={() => setToken(undefined)}><UserIcon />&nbsp;Logout</Button>
         }
         {
-          !isAuthenticated && <Button color="inherit" onClick={() => setAuthModal(true)}>Login</Button>
+          !isAuthenticated && <Button color="inherit" onClick={() => setAuthModal(true)}><UserIcon />&nbsp;Login</Button>
         }
         <AuthModal open={authModal} setOpen={setAuthModal} />
       </Toolbar>
