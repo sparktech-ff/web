@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {Form} from "@sparkui/react-form";
 import {PrimaryButton, SecondaryButton} from "@sparkui/react-theme";
 import styled from "styled-components";
@@ -22,7 +22,7 @@ export const FeatureFlagModal = (
     onAfterSave,
   }: FeatureFlagModalProps
 ) => {
-  const [users, setUsers] = useState(featureFlag?.users ?? ['']);
+  const [users, setUsers] = useState((featureFlag?.users ?? []));
 
   const onSave = async (data: FeatureFlagRequestDto) => {
     if (featureFlag?.id) {
@@ -74,22 +74,27 @@ export const FeatureFlagModal = (
             <div className="col-12 col-lg-6">
               <Limited className="d-flex flex-column align-items-start gap-3 w-100">
                 {
-                  users?.map((user, index) => (
+                  users.map((_, index) => (
                     <Form.Text
-                      key={`${user}${index}`}
+                      key={index}
                       param={`users[${index}]`}
                       params={{
                         label: 'User id',
-                        className: 'w-100'
+                        className: 'w-100',
+                        onKeyDown: (event: KeyboardEvent) => {
+                          if (event.ctrlKey && event.key === "Backspace") {
+                            setUsers(users => users.filter((_, idx) => index !== idx))
+                          }
+                        }
                       }}
                     />
                   ))
                 }
               </Limited>
               <AddButton>
-                <IconButton onClick={() => setUsers([...users, ''])}>
-                  <AddIcon/>
-                </IconButton>
+                <Button onClick={() => setUsers([...users, ''])}>
+                  <AddIcon/>&nbsp;New user id
+                </Button>
               </AddButton>
             </div>
           </div>
@@ -111,6 +116,7 @@ const StyledForm = styled(Form<FeatureFlagRequestDto>)`
 
 const AddButton = styled.div`
     display: flex;
+    padding-top: 16px;
     justify-content: end;
 `;
 
