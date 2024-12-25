@@ -23,9 +23,9 @@ const isTokenExpired = (token?: string | null)=>  {
 }
 
 export const AuthContext = createContext<AuthContextProps>({
-  token: localStorage.getItem("token"),
+  token: typeof localStorage === 'undefined' ? undefined : localStorage.getItem("token"),
   setToken: () => ({}),
-  isAuthenticated: !isTokenExpired(localStorage.getItem("token")),
+  isAuthenticated: !isTokenExpired(typeof localStorage === 'undefined' ? undefined : localStorage.getItem("token")),
 });
 
 export const useAuth = () => useContext(AuthContext);
