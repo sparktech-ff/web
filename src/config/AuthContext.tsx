@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useContext, useState} from "react";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 
 export interface AuthContextProps {
   token?: string | null;
@@ -36,6 +36,7 @@ export const AuthProvider = (
   }: AuthContextProviderProps
 ) => {
   const [idToken, setIdToken] = useState<string | null | undefined>(localStorage.getItem("token"));
+  const [intervalInstance, setIntervalInstance] = useState<number>();
 
   const setToken = (value?: string | null) => {
     if (value) {
@@ -45,6 +46,24 @@ export const AuthProvider = (
     }
     setIdToken(value);
   }
+
+  useEffect(() => {
+    if (intervalInstance) {
+      clearInterval(intervalInstance);
+    }
+    if (idToken) {
+      setIntervalInstance(
+        setInterval(
+          () => {
+            if (isTokenExpired(idToken)) {
+              setToken(undefined);
+            }
+          },
+          1000*60*2
+        ) as any
+      );
+    }
+  }, [idToken]);
 
   return (
     <AuthContext.Provider value={{token: idToken, setToken, isAuthenticated: !isTokenExpired(idToken)}}>

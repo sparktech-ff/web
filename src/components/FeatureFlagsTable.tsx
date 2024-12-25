@@ -45,7 +45,7 @@ export const FeatureFlagsTable = () => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell width={10}>Id</TableCell>
@@ -69,7 +69,7 @@ export const FeatureFlagsTable = () => {
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell width={10} component="th" scope="row">
+              <TableCell width={10}>
                 <LimitedWrapper>
                   <Limited>{row.id}</Limited>
                   <IconButton onClick={() => navigator.clipboard.writeText(row.id!)}>

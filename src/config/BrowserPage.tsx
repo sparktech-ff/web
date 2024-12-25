@@ -34,5 +34,5 @@ export const BrowserPage = ({children}: {children: ReactNode}) => {
 };
 
 const Content = styled.div`
-    padding: 16px 0;
+    padding: 24px 0;
 `

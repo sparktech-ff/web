@@ -6,6 +6,7 @@ import styled from "styled-components";
 import {FeatureFlagRequestDto, FeatureFlagResponseDto} from "@/rest/data-contracts";
 import {featureFlagService} from "@/services/http";
 import AddIcon from "@mui/icons-material/Add";
+import {isDefined} from "@sparkui/react-utils";
 
 export interface FeatureFlagModalProps {
   open: boolean;
@@ -22,7 +23,7 @@ export const FeatureFlagModal = (
     onAfterSave,
   }: FeatureFlagModalProps
 ) => {
-  const [users, setUsers] = useState((featureFlag?.users ?? []));
+  const [users, setUsers] = useState<(string|undefined)[]>(featureFlag?.users ?? []);
 
   const onSave = async (data: FeatureFlagRequestDto) => {
     if (featureFlag?.id) {
@@ -74,7 +75,10 @@ export const FeatureFlagModal = (
             <div className="col-12 col-lg-6">
               <Limited className="d-flex flex-column align-items-start gap-3 w-100">
                 {
-                  users.map((_, index) => (
+                  users
+                    .map((item, index) => ({item, index}))
+                    .filter(({item}) => isDefined(item))
+                    .map(({index}) => (
                     <Form.Text
                       key={index}
                       param={`users[${index}]`}
@@ -83,7 +87,11 @@ export const FeatureFlagModal = (
                         className: 'w-100',
                         onKeyDown: (event: KeyboardEvent) => {
                           if (event.ctrlKey && event.key === "Backspace") {
-                            setUsers(users => users.filter((_, idx) => index !== idx))
+                            setUsers(users => {
+                              const newUsers: (string|undefined)[] = [...users];
+                              newUsers[index] = undefined;
+                              return newUsers;
+                            })
                           }
                         }
                       }}
