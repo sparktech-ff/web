@@ -1,4 +1,14 @@
-import {IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
+} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {featureFlagService, publicFeatureFlagService} from "@/services/http";
 import {FeatureFlagRequestDto, FeatureFlagResponseDto} from "@/rest/data-contracts";
@@ -42,11 +52,10 @@ export const FeatureFlagsTable = () => {
             <TableCell align="right">Users</TableCell>
             {isAuthenticated && (
               <TableCell align="right">
-                Actions
-                &nbsp;
-                <IconButton onClick={() => setSaveFeatureFlag(emptyFlag())}>
+                <Button onClick={() => setSaveFeatureFlag(emptyFlag())}>
                   <AddIcon color="primary" />
-                </IconButton>
+                  &nbsp;New
+                </Button>
               </TableCell>
             )}
           </TableRow>
