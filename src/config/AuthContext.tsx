@@ -1,4 +1,5 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
+import {commonAuthService} from "@/services/http";
 
 export interface AuthContextProps {
   token?: string | null;
@@ -36,7 +37,7 @@ export const AuthProvider = (
   }: AuthContextProviderProps
 ) => {
   const [idToken, setIdToken] = useState<string | null | undefined>(localStorage.getItem("token"));
-  const [intervalInstance, setIntervalInstance] = useState<number>();
+  const [timeoutId, setTimeoutId] = useState<number>();
 
   const setToken = (value?: string | null) => {
     if (value) {
@@ -47,19 +48,22 @@ export const AuthProvider = (
     setIdToken(value);
   }
 
+  const refreshToken = async () => {
+    const response = await commonAuthService.loginAuth();
+    setToken(response.data.token);
+  }
+
   useEffect(() => {
-    if (intervalInstance) {
-      clearInterval(intervalInstance);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
     }
     if (idToken) {
-      setIntervalInstance(
-        setInterval(
+      setTimeoutId(
+        setTimeout(
           () => {
-            if (isTokenExpired(idToken)) {
-              setToken(undefined);
-            }
+            refreshToken();
           },
-          1000*60*2
+          1000*60*25
         ) as any
       );
     }

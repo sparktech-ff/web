@@ -28,6 +28,15 @@ export interface FeatureFlagResponseDto {
   users?: string[];
 }
 
+export interface LoginRequestDto {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponseDto {
+  token?: string;
+}
+
 export interface PageDataFeatureFlagResponseDto {
   items?: FeatureFlagResponseDto[];
   /** @format int64 */

@@ -4,15 +4,13 @@ import {Form} from "@sparkui/react-form";
 import {PrimaryButton, SecondaryButton} from "@sparkui/react-theme";
 import styled from "styled-components";
 import {useAuth} from "@/config/AuthContext";
+import nextConfig from "../../next.config";
+import {publicAuthService} from "@/services/http";
+import {LoginRequestDto} from "@/rest/data-contracts";
 
 export interface AuthModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-}
-
-export interface SignInRequest {
-  email: string;
-  password: string;
 }
 
 export const AuthModal = (
@@ -23,20 +21,10 @@ export const AuthModal = (
 ) => {
   const {setToken} = useAuth();
 
-  const signIn = async (request: SignInRequest) => {
-    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsfXcBCB7dRNjnk3eZpvDDfgRS4EZVfo0';
-    const response = await fetch(
-      url,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          ...request,
-          returnSecureToken: true
-        }),
-      }
-    );
-    const data = await response.json();
-    setToken(data.idToken);
+  const signIn = async (request: LoginRequestDto) => {
+    const url = nextConfig.publicRuntimeConfig?.server;
+    const response = await publicAuthService.login(request);
+    setToken(response.data.token);
     setOpen(false);
   }
 
@@ -68,7 +56,7 @@ export const AuthModal = (
         </DialogContent>
         <DialogActions className="p-3 gap-3">
           <SecondaryButton onClick={() => setOpen(false)}>Close</SecondaryButton>
-          <Form.Submit onSubmit={signIn}>
+          <Form.Submit<LoginRequestDto> onSubmit={signIn}>
             <PrimaryButton>Sign in</PrimaryButton>
           </Form.Submit>
         </DialogActions>

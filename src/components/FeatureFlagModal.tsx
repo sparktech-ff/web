@@ -43,7 +43,7 @@ export const FeatureFlagModal = (
           {featureFlag?.id ? 'Update' : 'Create a new'}
           &nbsp;Feature Flag
         </DialogTitle>
-        <DialogContent className="w-100">
+        <DialogContent sx={{minWidth: 'min(95vw, 600px)'}} className="w-100">
           <div className="row">
             <div className="col-12 col-lg-6">
               <div className="d-flex flex-column align-items-start gap-3 w-100">
@@ -81,6 +81,7 @@ export const FeatureFlagModal = (
                     .map(({index}) => (
                     <Form.Text
                       key={index}
+                      value=""
                       param={`users[${index}]`}
                       params={{
                         label: 'User id',

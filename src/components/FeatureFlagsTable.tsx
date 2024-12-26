@@ -71,7 +71,7 @@ export const FeatureFlagsTable = () => {
             >
               <TableCell width={10}>
                 <LimitedWrapper>
-                  <Limited>{row.id}</Limited>
+                  <Limited title={row.id}>{row.id}</Limited>
                   <IconButton onClick={() => navigator.clipboard.writeText(row.id!)}>
                     <CopyIcon />
                   </IconButton>
@@ -84,7 +84,9 @@ export const FeatureFlagsTable = () => {
                 {
                   row.users && (
                     <LimitedWrapper>
-                      <Limited>{row.users.length} - {row.users!.join(',')}</Limited>
+                      <Limited title={row.users!.join(',')}>
+                        {row.users.length} - {row.users!.join(',')}
+                      </Limited>
                       <IconButton onClick={() => navigator.clipboard.writeText(row.users!.join(','))}>
                         <CopyIcon />
                       </IconButton>
