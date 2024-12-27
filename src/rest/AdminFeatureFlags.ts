@@ -69,15 +69,21 @@ export class AdminFeatureFlags<SecurityDataType = unknown> extends HttpClient<Se
    * No description
    *
    * @tags Admin | Feature Flags
-   * @name GetAllFeatureFlagWithAdmin
+   * @name GetFeatureFlagsFeatureFlagWithAdmin
    * @summary Required bearer token with admin role.
    * @request GET:/admin/feature-flags/all
    * @secure
    */
-  getAllFeatureFlagWithAdmin = (params: RequestParams = {}) =>
+  getFeatureFlagsFeatureFlagWithAdmin = (
+    query?: {
+      userId?: string;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<FeatureFlagResponseDto[], any>({
       path: `/admin/feature-flags/all`,
       method: "GET",
+      query: query,
       secure: true,
       ...params,
     });
@@ -85,15 +91,21 @@ export class AdminFeatureFlags<SecurityDataType = unknown> extends HttpClient<Se
    * No description
    *
    * @tags Admin | Feature Flags
-   * @name ReloadAll
+   * @name ReloadAndGetFeatureFlags
    * @summary Required bearer token with admin role.
    * @request GET:/admin/feature-flags/reload
    * @secure
    */
-  reloadAll = (params: RequestParams = {}) =>
+  reloadAndGetFeatureFlags = (
+    query?: {
+      userId?: string;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<FeatureFlagResponseDto[], any>({
       path: `/admin/feature-flags/reload`,
       method: "GET",
+      query: query,
       secure: true,
       ...params,
     });

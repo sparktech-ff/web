@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Switch} from "@mui/material";
 import {Form} from "@sparkui/react-form";
 import {PrimaryButton, SecondaryButton} from "@sparkui/react-theme";
 import styled from "styled-components";
@@ -52,7 +52,7 @@ export const FeatureFlagModal = (
                   required={true}
                   params={{
                     getHelperText: (errors: []) => errors.length > 0 ? "Required value" : undefined,
-                    label: 'Name',
+                    label: 'Name *',
                     className: 'w-100'
                   }}
                 />
@@ -70,6 +70,15 @@ export const FeatureFlagModal = (
                     className: 'w-100'
                   }}
                 />
+                <Form.Field param="enabled">
+                  {({ref, value, onChange}) => (
+                    <Switch
+                      inputRef={ref}
+                      value={value}
+                      onChange={({target}) => onChange(target.checked)}
+                    />
+                  )}
+                </Form.Field>
               </div>
             </div>
             <div className="col-12 col-lg-6">
@@ -79,25 +88,26 @@ export const FeatureFlagModal = (
                     .map((item, index) => ({item, index}))
                     .filter(({item}) => isDefined(item))
                     .map(({index}) => (
-                    <Form.Text
-                      key={index}
-                      value=""
-                      param={`users[${index}]`}
-                      params={{
-                        label: 'User id',
-                        className: 'w-100',
-                        onKeyDown: (event: KeyboardEvent) => {
-                          if (event.ctrlKey && event.key === "Backspace") {
-                            setUsers(users => {
-                              const newUsers: (string|undefined)[] = [...users];
-                              newUsers[index] = undefined;
-                              return newUsers;
-                            })
+                      <Form.Text
+                        key={index}
+                        value=""
+                        param={`users[${index}]`}
+                        params={{
+                          label: 'User id',
+                          className: 'w-100',
+                          onKeyDown: (event: KeyboardEvent) => {
+                            if (event.ctrlKey && event.key === "Backspace") {
+                              setUsers(users => {
+                                const newUsers: (string|undefined)[] = [...users];
+                                newUsers[index] = undefined;
+                                return newUsers;
+                              })
+                            }
                           }
-                        }
-                      }}
-                    />
-                  ))
+                        }}
+                      />
+                    )
+                  )
                 }
               </Limited>
               <AddButton>
@@ -105,6 +115,18 @@ export const FeatureFlagModal = (
                   <AddIcon/>&nbsp;New user id
                 </Button>
               </AddButton>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <Form.TextArea
+                param="data"
+                params={{
+                  label: 'Data',
+                  rows: 2,
+                  className: 'w-100'
+                }}
+              />
             </div>
           </div>
         </DialogContent>

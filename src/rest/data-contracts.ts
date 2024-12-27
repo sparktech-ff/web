@@ -10,7 +10,9 @@
  */
 
 export interface FeatureFlagRequestDto {
+  data?: object;
   description?: string;
+  enabled?: boolean;
   mode?: string;
   name: string;
   users?: string[];
@@ -19,7 +21,9 @@ export interface FeatureFlagRequestDto {
 export interface FeatureFlagResponseDto {
   /** @format date-time */
   created?: string;
+  data?: object;
   description?: string;
+  enabled?: boolean;
   id?: string;
   mode?: string;
   name?: string;

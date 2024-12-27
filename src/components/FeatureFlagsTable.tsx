@@ -1,7 +1,7 @@
 import {
   Button,
   IconButton,
-  Paper,
+  Paper, Switch,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +16,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import CopyIcon from '@mui/icons-material/CopyAll';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import {useAuth} from "@/config/AuthContext";
 import {FeatureFlagModal} from "@/components/FeatureFlagModal";
 import {ConfirmationModal} from "@/components/ConfirmationModal";
@@ -35,7 +37,7 @@ export const FeatureFlagsTable = () => {
   const {isAuthenticated} = useAuth();
 
   const reload = async () => {
-    const response = await publicFeatureFlagService.getAll();
+    const response = await publicFeatureFlagService.getFeatureFlags();
     setRows(response.data)
   }
 
@@ -51,8 +53,8 @@ export const FeatureFlagsTable = () => {
             <TableCell width={10}>Id</TableCell>
             <TableCell align="left">Name</TableCell>
             <TableCell align="left">Mode</TableCell>
-            <TableCell align="left">Description</TableCell>
             <TableCell align="left">Specific users</TableCell>
+            <TableCell align="center">Enabled</TableCell>
             {isAuthenticated && (
               <TableCell align="right">
                 <Button onClick={() => setSaveFeatureFlag(emptyFlag())}>
@@ -79,7 +81,6 @@ export const FeatureFlagsTable = () => {
               </TableCell>
               <TableCell align="left">{row.name}</TableCell>
               <TableCell align="left">{row.mode}</TableCell>
-              <TableCell align="left">{row.description}</TableCell>
               <TableCell align="left">
                 {
                   row.users && (
@@ -94,6 +95,7 @@ export const FeatureFlagsTable = () => {
                   )
                 }
               </TableCell>
+              <TableCell align="center">{row.enabled ? <CheckIcon color="primary"/> : <CloseIcon color="error"/>}</TableCell>
               {
                 isAuthenticated && (
                   <TableCell align="right">
@@ -141,6 +143,7 @@ export const FeatureFlagsTable = () => {
 
 const LimitedWrapper = styled.div`
     display: flex;
+    justify-content: space-between;
     align-items: center;
 `;
 

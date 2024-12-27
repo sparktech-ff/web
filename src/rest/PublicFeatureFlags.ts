@@ -51,15 +51,21 @@ export class PublicFeatureFlags<SecurityDataType = unknown> extends HttpClient<S
    * No description
    *
    * @tags Public | Feature Flags
-   * @name GetAll
+   * @name GetFeatureFlags
    * @summary Bearer token is not required for this endpoint.
    * @request GET:/public/feature-flags/all
    * @secure
    */
-  getAll = (params: RequestParams = {}) =>
+  getFeatureFlags = (
+    query?: {
+      userId?: string;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<FeatureFlagResponseDto[], any>({
       path: `/public/feature-flags/all`,
       method: "GET",
+      query: query,
       secure: true,
       ...params,
     });
