@@ -56,7 +56,7 @@ export default function AppHome() {
 
         <section>
           <h2>7. Limitation of Liability</h2>
-          <p>Our application is provided on an "as is" basis. We will not be liable for any direct, indirect,
+          <p>Our application is provided on an &quot;as is&quot; basis. We will not be liable for any direct, indirect,
             incidental, or consequential damages arising from the use or inability to use the application.</p>
         </section>
 
