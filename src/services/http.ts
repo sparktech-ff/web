@@ -9,20 +9,24 @@ const config = {
   timeout: 30_000,
 }
 
+const api = nextConfig.publicRuntimeConfig?.api ?? {};
+const baseURL = `${api.server}${api.context}`;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const interceptor = async (config: any) => {
   const idToken = localStorage.getItem("token");
   if (idToken) {
     config.headers.Authorization = `Bearer ${idToken}`;
   }
+  config.baseURL = baseURL;
   return config;
 }
 
-export const publicFeatureFlagService = new PublicFeatureFlags();
-export const publicAuthService = new PublicAuth();
+export const publicFeatureFlagService = new PublicFeatureFlags({baseURL});
+export const publicAuthService = new PublicAuth({baseURL});
 
 export const featureFlagService = new AdminFeatureFlags(config);
-export const commonAuthService = new CommonAuth();
+export const commonAuthService = new CommonAuth(config);
 
 commonAuthService.instance.interceptors.request.use(interceptor);
 featureFlagService.instance.interceptors.request.use(interceptor);

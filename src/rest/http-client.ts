@@ -11,6 +11,7 @@
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
 import axios from "axios";
+import nextConfig from "../../next.config";
 
 export type QueryParamsType = Record<string | number, any>;
 
