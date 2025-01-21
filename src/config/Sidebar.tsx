@@ -45,7 +45,7 @@ export const Sidebar = (
             <ListItemIcon>
               <RuleIcon />
             </ListItemIcon>
-            <ListItemText primary="Terms and conditions" onClick={() => router.push('/')} />
+            <ListItemText primary="Terms and conditions" onClick={() => router.push('/terms-and-conditions')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -53,7 +53,7 @@ export const Sidebar = (
             <ListItemIcon>
               <PrivacyIcon />
             </ListItemIcon>
-            <ListItemText primary="Privacy and policy" onClick={() => router.push('/')} />
+            <ListItemText primary="Privacy policy" onClick={() => router.push('/privacy-policy')} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -64,7 +64,7 @@ export const Sidebar = (
             <ListItemIcon>
               <QuestionIcon />
             </ListItemIcon>
-            <ListItemText primary="FAQ" />
+            <ListItemText primary="FAQ"  onClick={() => router.push('/faq')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -72,7 +72,7 @@ export const Sidebar = (
             <ListItemIcon>
               <PoliceIcon />
             </ListItemIcon>
-            <ListItemText primary="Licence" onClick={() => router.push('/')} />
+            <ListItemText primary="Licence" onClick={() => router.push('/license')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -80,7 +80,7 @@ export const Sidebar = (
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
-            <ListItemText primary="Report issue" onClick={() => router.push('/')} />
+            <ListItemText primary="Report issue" onClick={() => router.push('/report-issue')} />
           </ListItemButton>
         </ListItem>
       </List>
