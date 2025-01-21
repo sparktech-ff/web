@@ -64,6 +64,7 @@ export const AuthProvider = (
             refreshToken();
           },
           1000*60*25
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ) as any
       );
     }

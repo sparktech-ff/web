@@ -9,6 +9,7 @@ const config = {
   timeout: 30_000,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const interceptor = async (config: any) => {
   const idToken = localStorage.getItem("token");
   if (idToken) {

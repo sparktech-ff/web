@@ -4,7 +4,6 @@ import {Form} from "@sparkui/react-form";
 import {PrimaryButton, SecondaryButton} from "@sparkui/react-theme";
 import styled from "styled-components";
 import {useAuth} from "@/config/AuthContext";
-import nextConfig from "../../next.config";
 import {publicAuthService} from "@/services/http";
 import {LoginRequestDto} from "@/rest/data-contracts";
 
@@ -22,7 +21,6 @@ export const AuthModal = (
   const {setToken} = useAuth();
 
   const signIn = async (request: LoginRequestDto) => {
-    const url = nextConfig.publicRuntimeConfig?.server;
     const response = await publicAuthService.login(request);
     setToken(response.data.token);
     setOpen(false);

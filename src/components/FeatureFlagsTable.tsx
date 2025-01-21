@@ -1,7 +1,7 @@
 import {
   Button,
   IconButton,
-  Paper, Switch,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -128,8 +128,8 @@ export const FeatureFlagsTable = () => {
           </span>
         }
         onClose={async (confirmed) => {
-          if (confirmed) {
-            await featureFlagService.remove(removeFeatureFlag?.id!)
+          if (confirmed && removeFeatureFlag?.id) {
+            await featureFlagService.remove(removeFeatureFlag?.id)
             setRemoveFeatureFlag(undefined);
             await reload()
           } else {

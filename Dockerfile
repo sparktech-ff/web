@@ -4,12 +4,11 @@ WORKDIR '/app'
 ARG APP_ENV=dev
 
 COPY ./package.json ./
-COPY ./yarn.lock ./
-RUN yarn install
+RUN npm install
 COPY ./ .
 
 # RUN cp ./configs/environments/env_$APP_ENV .env
-RUN yarn build
+RUN npm run build
 
 FROM node:22-alpine3.20
 WORKDIR /app
