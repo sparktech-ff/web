@@ -12,7 +12,7 @@ export default function AppHome() {
     <BrowserPage>
       <header>
         <h1>Report Issue</h1>
-        <strong>Email:</strong> <a href="mailto:support@sprk-tech.io">support@sprk-tech.io</a>
+        <strong>Email:</strong> <a href="mailto:info@spark-tech.io">info@spark-tech.io</a>
         <br/>
       </header>
 

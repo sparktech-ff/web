@@ -69,7 +69,7 @@ export default function AppHome() {
         <section>
           <h2>9. Contact Information</h2>
           <p>If you have any questions about these Terms and Conditions, please contact us at:<br/>
-            <strong>Email:</strong> <a href="mailto:support@sprk-tech.io">support@sprk-tech.io</a>
+            <strong>Email:</strong> <a href="mailto:info@spark-tech.io">info@spark-tech.io</a>
           </p>
         </section>
       </div>
