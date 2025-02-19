@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Switch} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Switch} from "@mui/material";
 import {Form} from "@sparkui/react-form";
 import {PrimaryButton, SecondaryButton} from "@sparkui/react-theme";
 import styled from "styled-components";
@@ -72,10 +72,16 @@ export const FeatureFlagModal = (
                 />
                 <Form.Field param="enabled">
                   {({ref, value, onChange}) => (
-                    <Switch
-                      inputRef={ref}
-                      value={value}
-                      onChange={({target}) => onChange(target.checked)}
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          inputRef={ref}
+                          value={value}
+                          checked={!!value}
+                          onChange={({target}) => onChange(target.checked)}
+                        />
+                      }
+                      label="Enabled"
                     />
                   )}
                 </Form.Field>
